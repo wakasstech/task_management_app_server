@@ -2,4 +2,6 @@
 # node_modules
 # .env
 # package-lock.json
-.env
+config.env
+node_modules
+
