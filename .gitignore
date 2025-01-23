@@ -1,8 +1,8 @@
 # Other ignore rules...
 # node_modules
-node_modules
+./node_modules
 # .env
-config.env
+./config.env
 # package-lock.json
-package-lock.json
+./package-lock.json
 
