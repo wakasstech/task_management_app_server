@@ -1,0 +1,15 @@
+const express = require('express');
+const boardController = require('../Controllers/boardController');
+const route = express.Router();
+const auth = require("../Middlewares/auth");
+route.post('/:workspaceId/:boardId/add-member',boardController.addMember);
+route.delete('/:workspaceId/:boardId/delete-member-from-Board',boardController.deleteMember);
+route.put('/:workspaceId/:boardId/update-background', boardController.updateBackground);
+route.put('/:workspaceId/:boardId/update-board-description',  boardController.updateBoardDescription);
+route.put('/:workspaceId/:boardId/update-board-title',boardController.updateBoardTitle);
+route.post('/create',boardController.create);
+route.get('/:workspaceId/:boardId', boardController.getById);
+route.delete('/:workspaceId/:boardId',boardController.deleteById);
+route.get('/:workspaceId/:boardId/activity', boardController.getActivityById);
+route.get('/:workspaceId',  boardController.getAll);
+module.exports = route;

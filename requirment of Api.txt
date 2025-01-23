@@ -1,0 +1,23 @@
+Register:
+API (/register)
+POST
+payload body:
+{
+fullName: 
+email:
+password:
+}
+
+Login:
+{
+email mandatory 
+password
+}
+
+waqa@bshjd
+id 78
+message"user created successfully
+
+
+POST
+

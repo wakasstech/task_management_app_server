@@ -1,0 +1,226 @@
+import React from 'react'
+import { Container, Wrapper, Title, Board, AddBoard } from "./Styled";
+import  { useEffect, useState } from "react";
+import { boards, BoardsData } from '../../dummy';
+import CreateBoardModal from '../../components/modals/CreateBoardModal/CreateBoardModal';
+export default function Boards() {
+    const [boardsData, setboardsData] = useState(BoardsData);
+    const [openModal, setOpenModal] = useState(false);
+    const [searchString, setSearchString] = useState('');
+    
+    const handleModalClose = () => {
+      setOpenModal(false);
+    };
+    const handleCreateBoard = (boardTitle, selectedBackground) => {
+      // Logic to create a new board with the provided title
+      // You can update the boardsData state with the new board
+      // For example:
+      const newBoard = {
+        _id: Math.random().toString(),
+        title: boardTitle,
+        isImage: true,
+        backgroundImageLink: selectedBackground,
+
+        // Other properties of the new board
+      };
+      setboardsData([...boardsData, newBoard]);
+    };
+    useEffect(() => {
+        document.title = "Boards | Trello Clone"
+      }, [])
+    console.log(openModal)
+  return (
+    <>
+    <Container>        
+      {/* <Navbar searchString={searchString} setSearchString={setSearchString} /> */}
+      <Wrapper>
+        <Title>Your Boards</Title>
+        {
+          boardsData.length>0 &&
+          boardsData.filter(item=>searchString?item.title.toLowerCase().includes(searchString.toLowerCase()):true).map((item) => {
+            return (
+              <Board key={item._id} link={item.backgroundImageLink} isImage={item.isImage} id={item._id} >
+                {item.title}
+              </Board>
+            );
+          })}
+   <AddBoard onClick={() => setOpenModal(true)}>Create new board</AddBoard>
+   {openModal && (
+            <CreateBoardModal isOpen={openModal} onClose={handleModalClose} onCreateBoard={handleCreateBoard} />
+          )}
+        
+      </Wrapper>
+    </Container>
+  </>
+  )
+}  
+  import React, { useState } from 'react';
+import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalFooter, Button } from './Styled';
+const backgroundOptions = [
+
+    { label: 'Option 1', image: "https://images.pexels.com/photos/1324803/pexels-photo-1324803.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"},
+    { label: 'Option 2', image: "https://trello-backgrounds.s3.amazonaws.com/SharedBackground/2400x1600/a651551a5214cb84963366cf9eaacb40/photo-1636207543865-acf3ad382295.jpg" },
+    { label: 'Option 3', image: "https://www.pexels.com/@pixabay/"},
+    { label: 'Option 4', image: "https://images.pexels.com/photos/2356059/pexels-photo-2356059.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load" },
+
+    // Add more options as needed
+  ];
+export default function CreateBoardModal({ isOpen, onClose, onCreateBoard }) {
+    const [boardTitle, setBoardTitle] = useState('');
+    const [selectedBackground, setSelectedBackground] = useState('');
+    const handleTitleChange = (e) => {
+      setBoardTitle(e.target.value);
+    };
+  
+    const handleCreateBoard = () => {
+        console.log(selectedBackground);
+      onCreateBoard(boardTitle,selectedBackground);
+      onClose();
+    };
+  
+    const handleCancel = () => {
+      onClose();
+    };
+  
+    const handleBackgroundSelect = (image) => {
+        setSelectedBackground(image);
+      };
+
+
+
+    return (
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Create New Board</ModalHeader>
+          <ModalBody>
+            <label htmlFor="boardTitle">Board Title:</label>
+            <input type="text" id="boardTitle" value={boardTitle} onChange={handleTitleChange} />
+            <div>
+    Select Background Picture:
+    {backgroundOptions.map((option) => (
+      <label key={option.label}>
+        <input
+          type="radio"
+          name="backgroundOption"
+          value={option.label}
+          checked={selectedBackground === option.image}
+          onChange={() => handleBackgroundSelect(option.image)}
+        />
+        {option.label}
+      </label>
+    ))}
+  </div>
+          </ModalBody>
+          <ModalFooter>
+            <Button onClick={handleCreateBoard}>Create</Button>
+            <Button variant="secondary" onClick={handleCancel}>
+              Cancel
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+    );
+  }
+    i am  try  to select background  Image   there show radio button  but i want that instead of radio button there should be showed to me  small pic 
+ChatGPT
+import React, { useState } from 'react';
+import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalFooter, Button } from './Styled';
+import { styled } from '@mui/material/styles';
+const backgroundOptions = [
+
+    { label: 'Option 1', image: "https://images.pexels.com/photos/1324803/pexels-photo-1324803.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"},
+    { label: 'Option 2', image: "https://trello-backgrounds.s3.amazonaws.com/SharedBackground/2400x1600/a651551a5214cb84963366cf9eaacb40/photo-1636207543865-acf3ad382295.jpg" },
+    { label: 'Option 3', image: "https://www.pexels.com/@pixabay/"},
+    { label: 'Option 4', image: "https://images.pexels.com/photos/2356059/pexels-photo-2356059.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load" },
+
+    // Add more options as needed
+  ];
+  
+const MenuItem = styled('div')(({ theme }) => ({
+  display: 'flex',
+}));
+
+export default function CreateBoardModal({ Open, onClose, onCreateBoard }) {
+    const [boardTitle, setBoardTitle] = useState('');
+    const [selectedBackground, setSelectedBackground] = useState('');
+    const handleTitleChange = (e) => {
+      setBoardTitle(e.target.value);
+    };
+  
+    const handleCreateBoard = () => {
+        console.log(selectedBackground);
+      onCreateBoard(boardTitle,selectedBackground);
+      onClose();
+    };
+  
+    const handleCancel = () => {
+      onClose();
+    };
+  
+    const handleBackgroundSelect = (image) => {
+        setSelectedBackground(image);
+      };
+
+
+
+    return (
+      <Modal isOpen={Open} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Create New Board</ModalHeader>
+          <ModalBody>
+            <label htmlFor="boardTitle">Board Title:</label>
+            <input type="text" id="boardTitle" value={boardTitle} onChange={handleTitleChange} />
+            <div>
+    Select Background Picture:
+    {backgroundOptions.map((option) => (
+      <label key={option.label}>
+        <input
+          type="radio"
+          name="backgroundOption"
+          value={option.label}
+          checked={selectedBackground === option.image}
+          onChange={() => handleBackgroundSelect(option.image)}
+        />
+        {option.label}
+      </label>
+    ))}
+  </div>
+          </ModalBody>
+          <ModalFooter>
+          <button className="primary" onClick={handleCreateBoard}>Create</button>
+          <button className="secondary" onClick={handleCancel}>Cancel</button>
+        </ModalFooter>
+        </ModalContent>
+      </Modal>
+    );
+  }
+
+    { id: 1, title: "First board", imageUrl: "https://a.trellocdn.com/prgb/assets/d106776cb297f000b1f4.svg" },
+     { id: 2, title: "Second board", imageUrl: "https://a.trellocdn.com/prgb/assets/a7c521b94eb153008f2d.svg" },
+     { id: 3, title: "Third board", imageUrl: "https://a.trellocdn.com/prgb/assets/aec98becb6d15a5fc95e.svg"},
+     { id: 4, title: "First board", imageUrl: "https://a.trellocdn.com/prgb/assets/d106776cb297f000b1f4.svg" },
+     { id: 5, title: "fort board", imageUrl: "https://a.trellocdn.com/prgb/assets/a7c521b94eb153008f2d.svg" },
+     { id: 6, title: "Third board", imageUrl: "https://a.trellocdn.com/prgb/assets/aec98becb6d15a5fc95e.svg"},
+
+
+
+
+
+
+
+ modal create board title
+ <Dialog open={open} onClose={onClose}>
+      <DialogTitle sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <Box display="flex" alignItems="center">
+          <IconButton onClick={onClose} sx={{ mr: 1 }}>
+            <ArrowBack />
+          </IconButton>
+          Create New Board
+        </Box>
+        <IconButton onClick={onClose}>
+          <Close />
+        </IconButton>
+      </DialogTitle>
+

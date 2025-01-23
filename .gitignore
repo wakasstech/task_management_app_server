@@ -1,0 +1,4 @@
+# Other ignore rules...
+# node_modules
+# .env
+# package-lock.json
